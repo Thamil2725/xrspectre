@@ -81,3 +81,9 @@ services:
         value: "1"
       - key: ENFORCE_ATTEMPT_IP_LOCK
         value: "true"
+
+      # ── TEMPORARY: show the admin ID + password on the login page ─────
+      # For testing only — anyone visiting can sign in as admin. Set to
+      # "false" (and change ADMIN_PASSWORD) before real use.
+      - key: SHOW_LOGIN_CREDENTIALS
+        value: "true"

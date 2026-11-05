@@ -1,7 +1,23 @@
 import { prisma } from '../config/prisma.js';
-import { hashPassword, verifyPassword, signToken } from '../utils/auth.js';
+import { config } from '../config/env.js';
+import { hashPassword, verifyPassword, signToken, normalizeEmail } from '../utils/auth.js';
 import { studentSignupSchema, loginSchema } from '../utils/validation.js';
 import { HttpError, asyncHandler } from '../middleware/errorHandler.js';
+
+// Testing aid: with SHOW_LOGIN_CREDENTIALS=true the login page displays the
+// admin account (read from the same env vars the seed uses, so it always
+// matches the real password). Answers 404 otherwise.
+export const getTestCredentials = (req, res) => {
+  const password = process.env.ADMIN_PASSWORD || '';
+  if (!config.showLoginCredentials || !password) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  res.set('Cache-Control', 'no-store');
+  return res.json({
+    email: normalizeEmail(process.env.ADMIN_EMAIL || 'admin@xrspectre.com'),
+    password,
+  });
+};
 
 export const getMe = asyncHandler(async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.userId } });

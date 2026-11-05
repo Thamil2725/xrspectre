@@ -14,6 +14,15 @@ export async function login({ email, password }) {
   return data.user;
 }
 
+// Testing aid — the server only answers when SHOW_LOGIN_CREDENTIALS=true.
+export async function getTestCredentials() {
+  try {
+    return await api.get('/auth/test-credentials', { auth: false });
+  } catch {
+    return null;
+  }
+}
+
 export function logout() {
   setToken(null);
 }

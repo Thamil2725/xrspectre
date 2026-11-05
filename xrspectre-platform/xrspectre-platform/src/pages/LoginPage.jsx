@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye } from 'lucide-react';
 import './AuthPages.css';
 import BrandMark from '../components/BrandMark';
+import { getTestCredentials } from '../api/auth';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,6 +14,21 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPw, setShowPw] = useState(false);
+  const [testLogin, setTestLogin] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    getTestCredentials().then((creds) => {
+      if (!cancelled && creds?.email && creds?.password) setTestLogin(creds);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const fillTestLogin = () => {
+    setEmail(testLogin.email);
+    setPassword(testLogin.password);
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +54,15 @@ export default function LoginPage() {
         </div>
         <p className="auth__tagline">Deconstruct your code down to silicon</p>
         <p className="auth__subtitle">Access your tests or your admin dashboard.</p>
+
+        {testLogin && (
+          <div className="auth__demo">
+            <div className="auth__demo-title">Test admin login</div>
+            <div className="auth__demo-row"><span>ID</span><code>{testLogin.email}</code></div>
+            <div className="auth__demo-row"><span>Password</span><code>{testLogin.password}</code></div>
+            <button type="button" className="auth__demo-fill" onClick={fillTestLogin}>Fill in</button>
+          </div>
+        )}
 
         {error && <div className="auth__error">{error}</div>}
 

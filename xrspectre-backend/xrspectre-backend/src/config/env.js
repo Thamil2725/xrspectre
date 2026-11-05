@@ -79,4 +79,9 @@ export const config = {
   // Students behind carrier-grade NAT or dual-stack IPv4/IPv6 can change
   // IP mid-test, so this can be disabled per deployment.
   enforceAttemptIpLock: bool('ENFORCE_ATTEMPT_IP_LOCK', true),
+
+  // TEMPORARY testing aid: show the admin login (ADMIN_EMAIL /
+  // ADMIN_PASSWORD) on the login page. Anyone who opens the site can then
+  // sign in as admin, so turn it off before real use.
+  showLoginCredentials: bool('SHOW_LOGIN_CREDENTIALS', false),
 };
