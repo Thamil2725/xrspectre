@@ -1,0 +1,101 @@
+.dp {
+  position: relative;
+  flex: 1;
+}
+
+.dp__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--paper-100);
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+  padding: 10px 0;
+  cursor: pointer;
+  text-align: left;
+}
+.dp__btn--empty { color: var(--ink-400); }
+.dp__btn svg { color: var(--ink-400); flex-shrink: 0; }
+
+.dp__popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  background: #f0f2f2;
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 12px;
+  width: 240px;
+}
+
+.dp__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.dp__nav-btn {
+  background: none;
+  border: none;
+  color: var(--ink-300);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  display: flex;
+}
+.dp__nav-btn:hover { color: var(--ink-100); background: var(--ink-800); }
+
+.dp__nav-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-100);
+}
+
+.dp__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.dp__day-head {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-400);
+  text-align: center;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.dp__empty { height: 28px; }
+
+.dp__day {
+  height: 28px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--ink-300);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.dp__day:hover { background: var(--ink-800); }
+.dp__day--today { font-weight: 700; color: var(--amber-700); }
+.dp__day--selected {
+  background: var(--amber-500);
+  color: white;
+  font-weight: 700;
+}
+.dp__day--selected:hover { background: var(--amber-400); }
+

@@ -1,0 +1,57 @@
+.cselect {
+  position: relative;
+}
+
+.cselect--disabled { opacity: 0.4; pointer-events: none; }
+
+.cselect__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--ink-900);
+  border: 1.5px solid var(--ink-700);
+  border-radius: var(--radius-sm);
+  color: var(--paper-100);
+  font-size: 13px;
+  padding: 9px 11px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  text-align: left;
+}
+.cselect__btn:hover { border-color: var(--ink-400); }
+.cselect__btn:focus-visible { border-color: var(--amber-500); outline: none; box-shadow: 0 0 0 2px rgba(229, 168, 35, 0.2); }
+.cselect__btn svg { color: var(--ink-400); flex-shrink: 0; }
+.cselect__btn--empty { color: var(--ink-400); }
+
+.cselect__options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  overflow: hidden;
+  max-height: 240px;
+  overflow-y: auto;
+  animation: fadeInUp var(--t-fast) var(--ease-out) both;
+}
+
+.cselect__option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--ink-200);
+  font-size: 13px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.cselect__option:hover { background: var(--ink-750); }
+.cselect__option--selected { color: var(--amber-500); font-weight: 600; }

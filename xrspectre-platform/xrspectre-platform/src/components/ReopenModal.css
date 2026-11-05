@@ -1,0 +1,55 @@
+.rmodal__overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn var(--t-base) var(--ease-out) both;
+}
+.rmodal {
+  background: var(--ink-900); border-radius: 12px;
+  width: 560px; max-width: 90vw; max-height: 90vh; overflow-y: auto;
+  padding: 24px;
+  animation: scaleIn var(--t-base) var(--ease-spring) both;
+}
+.rmodal__header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+}
+.rmodal__title { font-size: 17px; font-weight: 700; margin: 0; }
+.rmodal__close {
+  background: none; border: none; color: var(--ink-400); cursor: pointer; padding: 4px;
+}
+.rmodal__close:hover { color: var(--ink-200); }
+.rmodal__subtitle { font-size: 13px; color: var(--ink-400); margin: 0 0 16px; }
+.rmodal__loading, .rmodal__error {
+  font-size: 13.5px; padding: 12px 0;
+}
+.rmodal__error { color: var(--red-300); }
+.rmodal__body { display: flex; flex-direction: column; gap: 16px; }
+.rmodal__field { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.rmodal__label { font-size: 12.5px; font-weight: 600; color: var(--ink-300); text-transform: uppercase; letter-spacing: .04em; }
+.rmodal__input {
+  background: var(--ink-700); border: 1px solid var(--ink-600); border-radius: 6px;
+  padding: 8px 10px; color: var(--ink-100); font-size: 13.5px; outline: none;
+}
+.rmodal__input-group {
+  display: flex; align-items: center;
+  background: var(--ink-800); border: 1.5px solid var(--ink-700);
+  border-radius: 6px; padding: 0 8px;
+  transition: border-color 0.15s;
+}
+.rmodal__input-group:focus-within { border-color: var(--amber-500); }
+.rmodal__input--readonly { opacity: .6; cursor: not-allowed; background: #fff; border-color: var(--ink-300); }
+.rmodal__row { display: flex; gap: 16px; }
+.rmodal__footer {
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;
+}
+.rmodal__cancel {
+  background: #fff; border: 1px solid var(--ink-500); border-radius: 6px;
+  padding: 8px 16px; color: var(--ink-100); font-size: 13px; cursor: pointer;
+}
+.rmodal__cancel:hover { background: var(--ink-900); }
+.rmodal__submit {
+  background: var(--amber-500); border: none; border-radius: 6px;
+  padding: 8px 20px; color: #000; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.rmodal__submit:disabled { opacity: .4; cursor: not-allowed; }
+.rmodal__submit:not(:disabled):hover { background: var(--amber-400); }

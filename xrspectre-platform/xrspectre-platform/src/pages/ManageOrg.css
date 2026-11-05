@@ -1,0 +1,286 @@
+.morg__header { margin-bottom: 24px; }
+.morg__header h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; color: var(--paper-100); }
+.morg__header p { color: var(--ink-200); font-size: 14px; margin: 0; white-space: nowrap; }
+
+.morg__error {
+  color: var(--red-300);
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+.morg__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1000px) {
+  .morg__grid { grid-template-columns: 1fr; }
+}
+
+.morg__section {
+  background: var(--ink-900);
+  border: 1px solid var(--ink-800);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.morg__section:hover {
+  border-color: var(--ink-700);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.morg__section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--paper-100);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.morg__section-title svg { color: var(--amber-500); }
+
+/* breadcrumb context */
+.morg__ctx {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--ink-400);
+  font-weight: 400;
+  font-size: 12px;
+}
+.morg__ctx svg { color: var(--ink-500); }
+
+.morg__add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.morg__input {
+  flex: 1;
+  background: var(--ink-800);
+  border: 1.5px solid var(--ink-700);
+  border-radius: var(--radius-sm);
+  color: var(--paper-100);
+  font-size: 13px;
+  padding: 9px 10px;
+  min-width: 0;
+}
+.morg__input:focus { outline: none; border-color: var(--amber-500); }
+
+.morg__add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-500);
+  color: var(--ink-950);
+  border: none;
+  border-radius: var(--radius-sm);
+  width: 36px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.morg__add-btn:hover:not(:disabled) { background: var(--amber-300); }
+.morg__add-btn:disabled { opacity: 0.4; cursor: default; }
+
+.morg__row-error {
+  color: var(--red-300);
+  font-size: 12px;
+  margin: -6px 0 10px;
+}
+
+.morg__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.morg__empty {
+  color: var(--ink-400);
+  font-size: 12.5px;
+  padding: 10px 0;
+}
+
+.morg__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink-800);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--paper-200);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.morg__item:hover {
+  background: var(--ink-750, var(--ink-700));
+}
+
+.morg__item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--paper-200);
+  font-size: 13px;
+}
+
+/* count badge */
+.morg__item-count {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-400);
+  background: var(--ink-750, var(--ink-700));
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.morg__delete-btn {
+  background: none;
+  border: none;
+  color: var(--ink-400);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.morg__item:hover .morg__delete-btn { opacity: 1; }
+.morg__delete-btn:hover:not(:disabled) { color: var(--red-300); background: var(--ink-700); }
+.morg__delete-btn:disabled { opacity: 0.4; }
+
+.morg__download-btn {
+  background: var(--amber-500);
+  border: none;
+  color: var(--ink-950);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 14px;
+  width: 100%;
+  transition: background 0.12s ease;
+}
+.morg__download-btn:hover:not(:disabled) { background: var(--amber-300); }
+.morg__download-btn:disabled { opacity: 0.4; cursor: default; }
+
+.morg__item--active {
+  border-color: var(--amber-500);
+  background: var(--ink-850);
+}
+
+/* ── Modal ────────────────────────────────── */
+.morg-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn var(--t-base) var(--ease-out) both;
+}
+
+.morg-modal {
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-md);
+  width: 420px;
+  max-width: 90vw;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  animation: scaleIn var(--t-base) var(--ease-spring) both;
+}
+
+.morg-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.morg-modal__header h3 {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--paper-100);
+}
+.morg-modal__icon { color: var(--amber-500); flex-shrink: 0; }
+.morg-modal__close {
+  background: none;
+  border: none;
+  color: var(--ink-400);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.morg-modal__close:hover { color: var(--paper-100); background: var(--ink-700); }
+
+.morg-modal__text {
+  font-size: 13.5px;
+  color: var(--ink-300);
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+.morg-modal__text strong { color: var(--paper-200); }
+.morg-modal__warn {
+  color: var(--red-300);
+  font-size: 12px;
+}
+
+.morg-modal__list {
+  margin: 0 0 12px;
+  padding: 0 0 0 20px;
+  font-size: 13px;
+  color: var(--ink-300);
+}
+.morg-modal__list li { margin-bottom: 3px; }
+
+.morg-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.morg-btn {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.morg-btn:disabled { opacity: 0.5; cursor: default; }
+
+.morg-btn--cancel {
+  background: var(--ink-800);
+  color: var(--paper-200);
+}
+.morg-btn--cancel:hover:not(:disabled) { background: var(--ink-700); }
+
+.morg-btn--danger {
+  background: var(--red-500);
+  color: white;
+}
+.morg-btn--danger:hover:not(:disabled) { background: var(--red-400); }

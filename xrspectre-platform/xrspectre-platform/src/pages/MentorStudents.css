@@ -1,0 +1,18 @@
+@import './ManageStudents.css';
+
+.mstudents__count {
+  font-size: 0.8rem;
+  color: var(--ink-400);
+}
+
+.mstudents__view-btn {
+  background: none;
+  border: 1px solid var(--ink-700);
+  color: var(--ink-400);
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+}
+.mstudents__view-btn:hover:not(:disabled) { border-color: var(--amber-500); color: var(--amber-400); }
+.mstudents__view-btn:disabled { opacity: 0.3; }

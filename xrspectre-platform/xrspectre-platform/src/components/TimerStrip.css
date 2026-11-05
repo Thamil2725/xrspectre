@@ -1,0 +1,119 @@
+.tstrip {
+  height: 50px;
+  background: var(--ink-900);
+  border-bottom: 1px solid var(--ink-800);
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.tstrip__title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--paper-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  letter-spacing: -0.01em;
+}
+
+.tstrip__timers {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.tstrip__divider {
+  width: 1px;
+  height: 22px;
+  background: var(--ink-700);
+}
+
+.tstrip__timer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  background: var(--ink-850);
+  transition: background 0.15s ease;
+}
+.tstrip__timer:hover { background: var(--ink-800); }
+
+.tstrip__timer svg {
+  color: var(--ink-500);
+  width: 14px;
+  height: 14px;
+}
+
+.tstrip__timer-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-400);
+}
+
+.tstrip__timer-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 46px;
+  color: var(--paper-100);
+  font-variant-numeric: tabular-nums;
+}
+
+.tstrip__timer--warning {
+  background: rgba(216, 155, 74, 0.12);
+}
+.tstrip__timer--warning .tstrip__timer-value,
+.tstrip__timer--warning svg {
+  color: var(--amber-500);
+}
+
+.tstrip__timer--critical {
+  background: rgba(201, 89, 79, 0.1);
+}
+.tstrip__timer--critical .tstrip__timer-value,
+.tstrip__timer--critical svg {
+  color: var(--red-500);
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+.tstrip__submit {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--amber-500);
+  color: #0E1014;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 8px 18px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  letter-spacing: -0.01em;
+}
+.tstrip__submit:hover { background: var(--amber-300); }
+.tstrip__submit:active { transform: scale(0.97); }
+
+.stest--dark .tstrip {
+  background: #252526;
+  border-bottom-color: #333;
+}
+.stest--dark .tstrip__title { color: #e0e0e0; }
+.stest--dark .tstrip__timer { background: #3c3c3c; }
+.stest--dark .tstrip__timer:hover { background: #4a4a4a; }
+.stest--dark .tstrip__timer-value { color: #e0e0e0; }
+.stest--dark .tstrip__divider { background: #555; }
+.stest--dark .tstrip__timer-label { color: #888; }

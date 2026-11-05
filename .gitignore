@@ -1,0 +1,21 @@
+# Dependencies & builds
+node_modules/
+dist/
+dist-ssr/
+
+# Environment files (secrets) — only the examples are committed
+.env
+.env.*
+!.env.example
+
+# Logs & OS/editor files
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Tool output
+.playwright-mcp/
+coverage/

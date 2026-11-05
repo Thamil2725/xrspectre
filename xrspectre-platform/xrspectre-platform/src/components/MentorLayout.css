@@ -1,0 +1,204 @@
+.mlayout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--ink-950);
+}
+
+.mlayout__sidebar {
+  width: 220px;
+  background: var(--ink-900);
+  border-right: 1px solid var(--ink-800);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 20px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.mlayout__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 24px;
+}
+
+.mlayout__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.mlayout__logo .brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--amber-500), var(--amber-700));
+  color: #1a1408;
+}
+
+.mlayout__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  color: var(--paper-100);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.mlayout__tagline {
+  font-size: 9px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-400);
+  letter-spacing: 0.01em;
+}
+
+.mlayout__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mlayout__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-300);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  overflow: hidden;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mlayout__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  width: 3px;
+  height: 0;
+  border-radius: 0 3px 3px 0;
+  background: var(--amber-500);
+  transition: height 0.2s ease;
+}
+
+.mlayout__link:hover { background: var(--ink-800); color: var(--paper-100); }
+
+.mlayout__link.active {
+  background: rgba(216,155,74,0.08);
+  color: var(--amber-500);
+}
+
+.mlayout__link.active::before {
+  height: 20px;
+}
+
+.mlayout__main {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 44px;
+  overflow-y: auto;
+  animation: fadeIn var(--t-base) var(--ease-out) both;
+}
+
+.mlayout__footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-800);
+}
+
+.mlayout__user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--ink-800);
+  border-radius: var(--radius-md);
+  transition: background 0.15s ease;
+}
+
+.mlayout__user-card:hover {
+  background: var(--ink-750);
+}
+
+.mlayout__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--amber-500);
+  color: var(--ink-950);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.mlayout__user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.mlayout__user-name {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--paper-100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mlayout__user-role {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+.mlayout__logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: none;
+  border: 1px solid var(--ink-700);
+  color: var(--ink-300);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.mlayout__logout:hover { border-color: var(--red-700); color: var(--red-300); background: rgba(201,89,79,0.06); }
+
+@media (max-width: 800px) {
+  .mlayout { flex-direction: column; }
+  .mlayout__sidebar { width: 100%; flex-direction: row; align-items: center; padding: 12px 16px; height: auto; position: static; }
+  .mlayout__brand { padding: 0 16px 0 0; }
+  .mlayout__nav { flex-direction: row; }
+  .mlayout__link::before { display: none; }
+  .mlayout__footer { margin-top: 0; margin-left: auto; flex-direction: row; align-items: center; border-top: none; padding-top: 0; }
+  .mlayout__main { padding: 24px; }
+}

@@ -1,0 +1,83 @@
+# Render Blueprint — deploys XRSpectre as ONE web service (the Express API
+# also serves the built React app, so there is no CORS setup) plus a
+# managed PostgreSQL database.
+#
+# Render dashboard → New → Blueprint → pick this repository.
+# You will be prompted for every variable marked `sync: false`.
+# Docs: https://render.com/docs/blueprint-spec
+
+databases:
+  - name: xrspectre-db
+    databaseName: xrspectre
+    user: xrspectre
+    plan: free          # free databases expire after 30 days — upgrade for real use
+    region: singapore   # must match the web service region
+
+services:
+  - type: web
+    name: xrspectre
+    runtime: node
+    plan: free
+    region: singapore
+    # Build the frontend (needs its devDependencies, e.g. Vite), then install
+    # the API (its postinstall step runs `prisma generate`).
+    buildCommand: >-
+      cd xrspectre-platform/xrspectre-platform && npm ci --include=dev && npm run build &&
+      cd ../../xrspectre-backend/xrspectre-backend && npm ci
+    # Apply pending migrations, create/update the admin account, start the API.
+    startCommand: >-
+      cd xrspectre-backend/xrspectre-backend && npx prisma migrate deploy &&
+      node prisma/seed.js && exec node src/server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: PRISMA_HIDE_UPDATE_MESSAGE
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: xrspectre-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+
+      # ── The single administrator account ──────────────────────────────
+      - key: ADMIN_EMAIL
+        value: admin@xrspectre.com
+      - key: ADMIN_NAME
+        value: Administrator
+      - key: ADMIN_PASSWORD     # ≥ 12 characters. Change it here + redeploy to rotate.
+        sync: false
+
+      # ── Code execution (Render cannot run Docker sandboxes) ───────────
+      # Point this at a Judge0 CE instance: self-hosted on a Linux VM, or
+      # RapidAPI (JUDGE0_URL=https://judge0-ce.p.rapidapi.com + key below).
+      - key: EXECUTION_PROVIDER
+        value: judge0
+      - key: JUDGE0_URL
+        sync: false
+      - key: JUDGE0_AUTH_TOKEN  # self-hosted Judge0 with AUTHN_TOKEN (optional)
+        sync: false
+      - key: JUDGE0_RAPIDAPI_KEY  # RapidAPI-hosted Judge0 (optional)
+        sync: false
+
+      # ── Subjective-answer grading ─────────────────────────────────────
+      # 'stub' gives full marks to any non-empty answer. For real grading
+      # set 'openai-compatible' and fill in the AI_* values.
+      - key: AI_EVALUATION_PROVIDER
+        value: stub
+      - key: AI_ENDPOINT
+        value: https://api.openai.com/v1/chat/completions
+      - key: AI_MODEL
+        value: gpt-4o-mini
+      - key: AI_API_KEY
+        sync: false
+
+      # ── Networking ────────────────────────────────────────────────────
+      - key: TRUST_PROXY        # Render puts one proxy in front of the app
+        value: "1"
+      - key: ENFORCE_ATTEMPT_IP_LOCK
+        value: "true"

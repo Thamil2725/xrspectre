@@ -1,0 +1,381 @@
+// Prisma schema for the XRSpectre platform.
+// Run `npx prisma generate` then `npx prisma migrate dev --name init`
+// after setting DATABASE_URL in .env (see .env.example).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  MENTOR
+}
+
+enum TestStatus {
+  DRAFT
+  SCHEDULED
+  COMPLETED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  CODING
+  SUBJECTIVE
+}
+
+enum SubmissionStatus {
+  PENDING
+  PASSED
+  FAILED
+  PARTIAL
+  ERROR
+}
+
+model Institution {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  departments Department[]
+  batches     Batch[]
+  testLinks   TestInstitution[]
+  students    Student[]
+  mentors     Mentor[]
+  createdAt   DateTime     @default(now())
+}
+
+model Department {
+  id            String      @id @default(cuid())
+  name          String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institutionId String
+  batches       Batch[]
+  testLinks     TestDepartment[]
+  students      Student[]
+  mentors       Mentor[]
+  createdAt     DateTime    @default(now())
+
+  @@unique([institutionId, name])
+}
+
+model Batch {
+  id            String       @id @default(cuid())
+  name          String
+  institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institutionId String?
+  department    Department?  @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId  String?
+  testLinks     TestBatch[]
+  students      Student[]
+  mentors       Mentor[]
+  createdAt     DateTime     @default(now())
+
+  @@unique([institutionId, departmentId, name])
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role
+  admin        Admin?
+  student      Student?
+  mentor       Mentor?
+  createdAt    DateTime @default(now())
+}
+
+model Admin {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  testsCreated Test[]
+}
+
+model Student {
+  id            String       @id @default(cuid())
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String       @unique
+  institution   Institution  @relation(fields: [institutionId], references: [id])
+  institutionId String
+  department    Department   @relation(fields: [departmentId], references: [id])
+  departmentId  String
+  batch         Batch        @relation(fields: [batchId], references: [id])
+  batchId       String
+
+  attempts      TestAttempt[]
+  submissions   Submission[]
+
+  @@index([institutionId])
+  @@index([departmentId])
+  @@index([batchId])
+}
+
+model Mentor {
+  id            String      @id @default(cuid())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String      @unique
+  institution   Institution @relation(fields: [institutionId], references: [id])
+  institutionId String
+  departments   Department[]
+  batches       Batch[]
+
+  @@index([institutionId])
+}
+
+// A Pool is a reusable question bank. Questions are organized into
+// categories within the pool. A test can reference a pool and randomly
+// assign a subset of questions to each student.
+model Pool {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String?
+  categories  PoolCategory[]
+  questions   PoolQuestion[]
+  testLinks   TestPool[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model PoolCategory {
+  id        String         @id @default(cuid())
+  pool      Pool           @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  poolId    String
+  name      String
+  questions PoolQuestion[]
+
+  @@unique([poolId, name])
+}
+
+model PoolQuestion {
+  id                  String           @id @default(cuid())
+  pool                Pool             @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  poolId              String
+  category            PoolCategory     @relation(fields: [categoryId], references: [id])
+  categoryId          String
+  order               Int
+  title               String
+  statement           String
+  constraints         String[]         @default([])
+  points              Int              @default(20)
+  timeAllottedMinutes Int              @default(20)
+  difficulty          Difficulty       @default(EASY)
+  type                QuestionType   @default(CODING)
+  modelAnswer         String?
+  timeLimitSecs       Int            @default(5)
+  memoryLimitMB       Int            @default(256)
+
+  functionSignature   Json?          @default("{}")
+  functionTemplates   Json?          @default("{}")
+
+  testCases           PoolTestCase[]
+  submissions         Submission[]
+  attemptAssignments  AttemptPoolQuestion[]
+  createdAt           DateTime         @default(now())
+}
+
+model PoolTestCase {
+  id          String       @id @default(cuid())
+  question    PoolQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId  String
+  input       String
+  output      String
+  isSample    Boolean      @default(false)
+  order       Int          @default(0)
+}
+
+// Tracks which pool questions were randomly assigned to a student's attempt.
+// When a student starts a pool-based test, N questions are selected at random
+// from the pool and recorded here so the same questions appear on resume.
+model AttemptPoolQuestion {
+  id              String       @id @default(cuid())
+  attempt         TestAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  attemptId       String
+  poolQuestion    PoolQuestion @relation(fields: [poolQuestionId], references: [id])
+  poolQuestionId  String
+  order           Int
+
+  @@unique([attemptId, poolQuestionId])
+}
+
+// A Test is the admin-authored assessment. Audience is defined via
+// many-to-many links to institutions/departments/batches — a student
+// can access the test only if they match at least one row in each
+// of the three link tables (see access-control logic in the service layer).
+model Test {
+  id          String      @id @default(cuid())
+  title       String
+  status      TestStatus  @default(DRAFT)
+  startTime   DateTime
+  endTime     DateTime
+  durationMinutes Int     @default(90)
+
+  createdBy   Admin       @relation(fields: [adminId], references: [id])
+  adminId     String
+
+  questions   Question[]
+  institutionLinks TestInstitution[]
+  departmentLinks  TestDepartment[]
+  batchLinks       TestBatch[]
+  poolLinks        TestPool[]
+  attempts    TestAttempt[]
+
+  // Pool-based test configuration
+  questionsPerStudent   Int                @default(0)
+  selectedCategoryIds   String[]           @default([])
+  selectedQuestionIds   String[]           @default([])
+  questionsPerCategory  String[]           @default([])
+
+  maxWarnings Int         @default(3)
+  securityEnabled Boolean @default(true)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model TestInstitution {
+  test          Test        @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId        String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institutionId String
+
+  @@id([testId, institutionId])
+}
+
+model TestDepartment {
+  test         Test       @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId       String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId String
+
+  @@id([testId, departmentId])
+}
+
+model TestBatch {
+  test    Test   @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId  String
+  batch   Batch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  batchId String
+
+  @@id([testId, batchId])
+}
+
+model TestPool {
+  test     Test   @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId   String
+  pool     Pool   @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  poolId   String
+
+  @@id([testId, poolId])
+}
+
+model Question {
+  id                  String       @id @default(cuid())
+  test                Test         @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId              String
+  order               Int
+  title               String
+  statement           String
+  constraints         String[]     @default([])
+  points              Int          @default(20)
+  timeAllottedMinutes Int          @default(20)
+  difficulty          Difficulty   @default(EASY)
+
+  type                QuestionType @default(CODING)
+  modelAnswer         String?
+  timeLimitSecs       Int          @default(5)
+  memoryLimitMB       Int          @default(256)
+
+  functionSignature   Json?        @default("{}")
+  functionTemplates   Json?        @default("{}")
+
+  testCases           TestCase[]
+  submissions         Submission[]
+
+  createdAt           DateTime     @default(now())
+}
+
+model TestCase {
+  id          String   @id @default(cuid())
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId  String
+  input       String
+  output      String
+  // Sample test cases are shown to students on the problem page;
+  // non-sample ("internal") cases are used only for grading.
+  isSample    Boolean  @default(false)
+  order       Int      @default(0)
+}
+
+// One TestAttempt per (student, test) — tracks the overall session:
+// start time, submission state, and the final score once submitted.
+model TestAttempt {
+  id          String    @id @default(cuid())
+  test        Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId      String
+  student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId   String
+
+  startedAt   DateTime  @default(now())
+  submittedAt DateTime?
+  totalScore  Int?
+  runCount    Int       @default(0)
+
+  warningCount    Int       @default(0)
+  disqualifiedAt  DateTime?
+
+  reopenedAt      DateTime?
+  reopenStartTime DateTime?
+  reopenEndTime   DateTime?
+
+  ipAddress         String?
+  browserFingerprint String?
+
+  submissions         Submission[]
+  attemptAssignments  AttemptPoolQuestion[]
+
+  @@unique([testId, studentId])
+  @@index([testId])
+}
+
+// A Submission is one student's final answer to one question within
+// an attempt. Run (non-submitted) executions are not persisted here —
+// only graded submissions, to keep the audit trail meaningful.
+model Submission {
+  id              String           @id @default(cuid())
+  attempt         TestAttempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  attemptId       String
+  question        Question?        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId      String?
+  poolQuestion    PoolQuestion?    @relation(fields: [poolQuestionId], references: [id], onDelete: Cascade)
+  poolQuestionId  String?
+  student         Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId       String
+
+  language    String?
+  code        String?
+  answer      String?
+  status      SubmissionStatus @default(PENDING)
+  passedCount Int              @default(0)
+  totalCount  Int              @default(0)
+  pointsAwarded Int            @default(0)
+  feedback      String?
+  needsReview   Boolean        @default(false)
+
+  createdAt   DateTime         @default(now())
+
+  @@index([attemptId])
+  @@index([questionId])
+  @@index([poolQuestionId])
+  @@index([studentId])
+  @@index([status])
+}

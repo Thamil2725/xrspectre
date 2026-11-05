@@ -1,0 +1,123 @@
+.ctsum { max-width: 960px; }
+
+.ctsum__header { margin-bottom: 28px; }
+
+.ctsum__header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 8px 0 8px;
+  color: var(--paper-100);
+}
+
+.ctsum__header p {
+  color: var(--ink-300);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ctsum__error {
+  color: var(--red-300);
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+
+.ctsum__empty {
+  color: var(--ink-400);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.ctsum__card {
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.ctsum__card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--paper-100);
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink-700);
+}
+.ctsum__card-title svg { color: var(--amber-500); }
+
+.ctsum__row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.ctsum__label {
+  flex-shrink: 0;
+  width: 140px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-400);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ctsum__value {
+  font-size: 14px;
+  color: var(--paper-100);
+  line-height: 1.5;
+}
+
+.ctsum__section {
+  margin-top: 8px;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--ink-750);
+}
+
+.ctsum__row--nested {
+  padding-left: 20px;
+}
+
+.ctsum__row--nested .ctsum__label {
+  width: auto;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.ctsum__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.ctsum__back, .ctsum__publish {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+}
+
+.ctsum__back {
+  background: none;
+  border: 1px solid var(--ink-700);
+  color: var(--ink-200);
+}
+.ctsum__back:hover { color: var(--paper-100); border-color: var(--ink-400); }
+
+.ctsum__publish {
+  background: var(--teal-500);
+  border: none;
+  color: var(--ink-950);
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+.ctsum__publish:hover:not(:disabled) { background: var(--teal-300); }
+.ctsum__publish:disabled { opacity: 0.4; cursor: default; }

@@ -1,0 +1,39 @@
+# Local development services. Not used on Render.
+#   docker compose up -d postgres            # database on localhost:5433
+#   docker compose build sandbox-runner      # image for EXECUTION_PROVIDER=docker
+#   docker compose up -d piston              # for EXECUTION_PROVIDER=piston
+#     then: ./scripts/install-piston-languages.sh
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: xrspectre
+      POSTGRES_PASSWORD: xrspectre
+      POSTGRES_DB: xrspectre
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  piston:
+    image: ghcr.io/engineer-man/piston
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - '127.0.0.1:2000:2000'
+    volumes:
+      - piston-data:/piston
+    profiles: ['piston']
+
+  sandbox-runner:
+    build: ./sandbox-runner
+    image: xrspectre-sandbox
+    # Only builds the image; sandbox containers are started on demand by the API.
+    restart: 'no'
+    command: ['node', '-e', "console.log('Sandbox image built')"]
+    profiles: ['sandbox']
+
+volumes:
+  postgres-data:
+  piston-data:

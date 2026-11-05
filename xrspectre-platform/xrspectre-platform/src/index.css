@@ -1,0 +1,156 @@
+/* ===== Design tokens ===== */
+:root {
+  /* Palette — warm, reduced eye strain */
+  --ink-950: #EDE9E1;
+  --ink-900: #F5F1EA;
+  --ink-850: #E8E3DA;
+  --ink-800: #DDD8CE;
+  --ink-750: #CFC9BE;
+  --ink-700: #BFB9AD;
+  --ink-600: #ADA69A;
+  --ink-500: #8A8378;
+  --ink-400: #6B655B;
+  --ink-300: #544F46;
+  --ink-200: #3D3932;
+  --ink-100: #25221C;
+
+  --paper-100: #25221C;
+  --paper-200: #3D3932;
+  --paper-300: #544F46;
+
+  --amber-500: #E5A823;
+  --amber-300: #F0C86E;
+  --amber-400: #DBA532;
+  --amber-700: #C49118;
+
+  --teal-500: #43A047;
+  --teal-300: #66BB6A;
+  --teal-700: #2E7D32;
+
+  --red-500: #C9594F;
+  --red-300: #B8483E;
+  --red-700: #9B3F37;
+  --red-900: #F5D6D4;
+  --red-950: #FBE9E8;
+
+  /* Type */
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --nav-rail-w: 76px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 0.12s;
+  --t-base: 0.2s;
+  --t-slow: 0.35s;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--ink-950);
+  color: var(--paper-100);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(216, 155, 74, 0.25);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out),
+              opacity var(--t-fast) var(--ease-out);
+}
+
+input, textarea, select {
+  transition: border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber-500);
+  outline-offset: 2px;
+  transition: outline-offset var(--t-fast) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--ink-600);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-500); }
+
+/* ─── Keyframes ─── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ─── Utility classes ─── */
+.fade-in  { animation: fadeIn var(--t-base) var(--ease-out) both; }
+.fade-up  { animation: fadeInUp var(--t-slow) var(--ease-out) both; }
+.scale-in { animation: scaleIn var(--t-base) var(--ease-spring) both; }
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--ink-500);
+  font-size: 0.95rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ink-700);
+  border-top-color: var(--amber-500);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}

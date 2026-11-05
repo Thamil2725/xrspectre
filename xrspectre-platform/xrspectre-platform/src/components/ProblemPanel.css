@@ -1,0 +1,204 @@
+.pp {
+  color: var(--paper-200);
+  overflow-y: auto;
+  height: 100%;
+  padding: 28px 32px 80px;
+}
+
+.pp__header {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--ink-750);
+}
+
+.pp__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.pp__title {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--paper-100);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pp__badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pp__badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: -0.01em;
+}
+.pp__badge--EASY { background: rgba(79, 168, 160, 0.12); color: var(--teal-700); }
+.pp__badge--MEDIUM { background: rgba(216, 155, 74, 0.12); color: var(--amber-700); }
+.pp__badge--HARD { background: rgba(201, 89, 79, 0.12); color: var(--red-700); }
+
+.pp__badge--type { background: var(--ink-800); color: var(--ink-400); }
+
+.pp__category {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-400);
+  background: var(--ink-800);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.pp__points {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-400);
+  background: var(--ink-800);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.pp__time {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-400);
+  background: var(--ink-800);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.pp__badge--limit { display: none; }
+.pp__limits {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-400);
+}
+
+.pp__body {
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.pp__section {
+  margin-bottom: 28px;
+  background: var(--ink-900);
+  border: 1px solid var(--ink-800);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+}
+
+.pp__body p {
+  margin: 0 0 14px;
+  color: var(--paper-200);
+}
+
+.pp__subhead {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-400);
+  margin: 0 0 10px;
+}
+
+.pp__constraints {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-300);
+  padding-left: 18px;
+  margin: 0;
+  line-height: 1.9;
+}
+
+.pp__samples {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pp__sample {
+  background: var(--ink-850);
+  border: 1px solid var(--ink-750);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.pp__sample-header {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-400);
+  padding: 7px 14px;
+  background: var(--ink-800);
+  border-bottom: 1px solid var(--ink-750);
+}
+
+.pp__sample-body {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pp__sample-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.pp__sample-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-500);
+  width: 44px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.pp__sample-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--paper-200);
+  background: var(--ink-950);
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  flex: 1;
+  overflow-x: auto;
+  line-height: 1.55;
+  border: 1px solid var(--ink-800);
+}
+
+.pp__empty {
+  color: var(--ink-500);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.stest--dark .pp { color: #d4d4d4; }
+.stest--dark .pp__title { color: #e0e0e0; }
+.stest--dark .pp__header { border-bottom-color: #333; }
+.stest--dark .pp__body p { color: #d4d4d4; }
+.stest--dark .pp__section { background: #2d2d2d; border-color: #444; }
+.stest--dark .pp__badge--type { background: #444; color: #888; }
+.stest--dark .pp__category { background: #444; color: #888; }
+.stest--dark .pp__points { background: #444; color: #888; }
+.stest--dark .pp__time { background: #444; color: #888; }
+.stest--dark .pp__sample { background: #333; border-color: #555; }
+.stest--dark .pp__sample-header { background: #3c3c3c; border-bottom-color: #555; color: #888; }
+.stest--dark .pp__sample-code { background: #1e1e1e; color: #d4d4d4; border-color: #444; }
+.stest--dark .pp__constraints { color: #b4b4b4; }
+.stest--dark .pp__subhead { color: #888; }
